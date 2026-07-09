@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#f5f5f7" />
+  <title>KU101 London Countdown</title>
+  <style>
+    :root {
+      --bg: #f5f5f7;
+      --card: rgba(255, 255, 255, 0.72);
+      --card-strong: rgba(255, 255, 255, 0.92);
+      --text: #111827;
+      --muted: #6b7280;
+      --line: rgba(17, 24, 39, 0.10);
+      --shadow: rgba(0, 0, 0, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(80, 150, 255, 0.35), transparent 32%),
+        radial-gradient(circle at 80% 0%, rgba(255, 255, 255, 0.9), transparent 34%),
+        radial-gradient(circle at 50% 100%, rgba(180, 210, 255, 0.35), transparent 30%),
+        var(--bg);
+      color: var(--text);
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: max(22px, env(safe-area-inset-top)) 18px max(22px, env(safe-area-inset-bottom));
+    }
+
+    .shell {
+      width: min(430px, 100%);
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 18px;
+      animation: rise 700ms ease both;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 650;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    h1 {
+      margin: 16px 0 7px;
+      font-size: clamp(34px, 9vw, 48px);
+      line-height: 0.98;
+      letter-spacing: -1.8px;
+      font-weight: 850;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.35;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 34px;
+      padding: 22px;
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.75);
+      box-shadow:
+        0 30px 80px var(--shadow),
+        inset 0 1px 0 rgba(255,255,255,0.9);
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      animation: rise 900ms ease 90ms both;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(130deg, rgba(255,255,255,0.95), transparent 36%),
+        radial-gradient(circle at 80% 15%, rgba(0, 122, 255, 0.14), transparent 26%);
+      pointer-events: none;
+    }
+
+    .inside {
+      position: relative;
+      z-index: 1;
+    }
+
+    .topline {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .airline {
+      font-size: 17px;
+      font-weight: 780;
+      letter-spacing: -0.2px;
+    }
+
+    .desc {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 560;
+    }
+
+    .badge {
+      padding: 10px 13px;
+      border-radius: 18px;
+      background: rgba(17,24,39,0.92);
+      color: white;
+      font-size: 22px;
+      font-weight: 850;
+      letter-spacing: -0.4px;
+      box-shadow: 0 12px 30px rgba(17,24,39,0.22);
+    }
+
+    .route {
+      display: grid;
+      grid-template-columns: 1fr 56px 1fr;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+
+    .airport.right {
+      text-align: right;
+    }
+
+    .code {
+      font-size: 55px;
+      line-height: 0.9;
+      font-weight: 900;
+      letter-spacing: -2.5px;
+    }
+
+    .city {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 620;
+      line-height: 1.25;
+    }
+
+    .flight-line {
+      height: 2px;
+      background: linear-gradient(90deg, rgba(17,24,39,0.18), rgba(17,24,39,0.55), rgba(17,24,39,0.18));
+      position: relative;
+      border-radius: 99px;
+    }
+
+    .flight-line::after {
+      content: "✈";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -58%);
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--card-strong);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.10);
+      font-size: 18px;
+    }
+
+    .details {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .detail {
+      border-radius: 20px;
+      padding: 14px;
+      background: rgba(255,255,255,0.66);
+      border: 1px solid rgba(17,24,39,0.07);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.75);
+    }
+
+    .detail span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .detail b {
+      display: block;
+      font-size: 17px;
+      letter-spacing: -0.2px;
+    }
+
+    .count-title {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      margin: 8px 0 12px;
+      text-align: center;
+    }
+
+    .countdown {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .unit {
+      border-radius: 22px;
+      background: rgba(17,24,39,0.92);
+      color: white;
+      padding: 15px 7px 13px;
+      text-align: center;
+      box-shadow: 0 14px 30px rgba(17,24,39,0.18);
+    }
+
+    .num {
+      font-size: clamp(28px, 9vw, 41px);
+      font-weight: 880;
+      line-height: 1;
+      letter-spacing: -1px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .label {
+      margin-top: 7px;
+      color: rgba(255,255,255,0.66);
+      font-size: 9.5px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .progress-wrap {
+      margin-top: 18px;
+    }
+
+    .progress-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .progress {
+      height: 9px;
+      border-radius: 999px;
+      background: rgba(17,24,39,0.10);
+      overflow: hidden;
+    }
+
+    .bar {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #111827, #4b5563);
+      transition: width 600ms ease;
+    }
+
+    .note {
+      margin-top: 17px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+      font-weight: 560;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 12px;
+      animation: rise 900ms ease 180ms both;
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 360px) {
+      .card { padding: 18px; border-radius: 30px; }
+      .code { font-size: 47px; }
+      .route { grid-template-columns: 1fr 46px 1fr; }
+      .countdown { gap: 6px; }
+      .unit { border-radius: 18px; padding: 13px 4px 11px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="hero">
+      <div class="eyebrow">✈️ Kuwait to London</div>
+      <h1>Flight Countdown</h1>
+      <p class="subtitle">KU101 departs at 09:50 AM Kuwait time.</p>
+    </section>
+
+    <main class="card">
+      <div class="inside">
+        <section class="topline">
+          <div>
+            <div class="airline">Kuwait Airways</div>
+            <div class="desc">London Heathrow service</div>
+          </div>
+          <div class="badge">KU101</div>
+        </section>
+
+        <section class="route">
+          <div class="airport">
+            <div class="code">KWI</div>
+            <div class="city">Kuwait<br>International</div>
+          </div>
+          <div class="flight-line"></div>
+          <div class="airport right">
+            <div class="code">LHR</div>
+            <div class="city">London<br>Heathrow</div>
+          </div>
+        </section>
+
+        <section class="details">
+          <div class="detail"><span>Date</span><b>21 July 2026</b></div>
+          <div class="detail"><span>Departure</span><b>09:50 AM</b></div>
+          <div class="detail"><span>Arrival</span><b>2:45 PM</b></div>
+          <div class="detail"><span>Terminal</span><b>T4 → T4</b></div>
+        </section>
+
+        <div class="count-title">Time left until departure</div>
+
+        <section class="countdown">
+          <div class="unit"><div class="num" id="days">--</div><div class="label">Days</div></div>
+          <div class="unit"><div class="num" id="hours">--</div><div class="label">Hours</div></div>
+          <div class="unit"><div class="num" id="minutes">--</div><div class="label">Mins</div></div>
+          <div class="unit"><div class="num" id="seconds">--</div><div class="label">Secs</div></div>
+        </section>
+
+        <section class="progress-wrap">
+          <div class="progress-head">
+            <span>Today</span>
+            <span>Departure</span>
+          </div>
+          <div class="progress"><div class="bar" id="bar"></div></div>
+        </section>
+
+        <div class="note" id="note">Open in Safari after uploading to Netlify for a live countdown.</div>
+      </div>
+    </main>
+
+    <div class="footer">Designed as an Apple-style flight card.</div>
+  </div>
+
+  <script>
+    var target = 1784616600000;
+    var start = new Date(2026, 6, 9, 0, 0, 0).getTime();
+
+    function pad(n) {
+      return n < 10 ? "0" + n : "" + n;
+    }
+
+    function text(id, value) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = value;
+    }
+
+    function updateCountdown() {
+      var now = new Date().getTime();
+      var diff = target - now;
+
+      if (diff <= 0) {
+        text("days", "0");
+        text("hours", "00");
+        text("minutes", "00");
+        text("seconds", "00");
+        text("note", "It is departure time. Have a safe flight.");
+        document.getElementById("bar").style.width = "100%";
+        return;
+      }
+
+      var total = Math.floor(diff / 1000);
+      var d = Math.floor(total / 86400);
+      var h = Math.floor((total % 86400) / 3600);
+      var m = Math.floor((total % 3600) / 60);
+      var s = total % 60;
+
+      text("days", String(d));
+      text("hours", pad(h));
+      text("minutes", pad(m));
+      text("seconds", pad(s));
+      text("note", "Counting down to KU101 from Kuwait to London.");
+
+      var pct = ((now - start) / (target - start)) * 100;
+      pct = Math.max(0, Math.min(100, pct));
+      document.getElementById("bar").style.width = pct + "%";
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
